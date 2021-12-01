@@ -1,5 +1,5 @@
 use std::fs;
-use itertools::zip;
+use itertools::Itertools;
 
 type Data = Vec<u32>;
 
@@ -21,15 +21,10 @@ fn test_part1(){
 }
 
 fn part1(data: Data) -> usize {
-    data.into_iter().fold(
-        (u32::MAX,0), 
-        | (prev, val), next | -> (u32, usize) {
-            if next>prev {
-                (next, val+1)
-            } else { 
-                (next, val)}
-            } 
-        ).1
+    data.into_iter()
+        .tuple_windows()
+        .filter(|(prev,next)| next>prev)
+        .count()
 }
 
 #[test]
@@ -38,12 +33,10 @@ fn test_part2(){
 }
 
 fn part2(data: Data) -> usize {
-    let windowed:Vec<u32> = 
-        zip(
-            zip(&data, &data[1..]),
-            &data[2..]
-        )
-        .map(|((x, y), z)| x + y + z)
+    let windowed:Vec<u32> = data
+        .into_iter()
+        .tuple_windows::<(_,_,_)>()
+        .map(|(x, y, z)| x + y + z)
         .collect();
     part1(windowed)
 }
