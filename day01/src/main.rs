@@ -5,7 +5,7 @@ type Data = Vec<u32>;
 
 fn parse(fname: &str) -> Data {
     let input :String = String::from_utf8(fs::read(fname).expect("missing file")).unwrap();
-    input.lines().map(|x| u32::from_str_radix(x,10).unwrap()).collect()
+    input.lines().map(|x| { x.parse().unwrap()}).collect()
 }
 
 #[test]
