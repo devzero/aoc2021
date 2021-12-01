@@ -4,8 +4,7 @@ use itertools::zip;
 type Data = Vec<u32>;
 
 fn parse(fname: &str) -> Data {
-    String::from_utf8(fs::read(fname)
-        .expect("missing file"))
+    String::from_utf8(fs::read(fname).expect("missing file"))
         .unwrap()
         .lines()
         .map(|x| {
