@@ -7,11 +7,11 @@ fn parse(fname: &str) -> Data {
     String::from_utf8(fs::read(fname).expect("missing file"))
         .unwrap()
         .lines()
-        .map(|x| {
+        .map(|x| 
              x
                 .parse()
                 .unwrap()
-            })
+            )
         .collect()
 }
 
