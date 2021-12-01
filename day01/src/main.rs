@@ -4,8 +4,17 @@ use itertools::zip;
 type Data = Vec<u32>;
 
 fn parse(fname: &str) -> Data {
-    let input :String = String::from_utf8(fs::read(fname).expect("missing file")).unwrap();
-    input.lines().map(|x| { x.parse().unwrap()}).collect()
+    let input :String = String::from_utf8(fs::read(fname)
+        .expect("missing file"))
+        .unwrap();
+    input
+        .lines()
+        .map(|x| {
+             x
+                .parse()
+                .unwrap()
+            })
+        .collect()
 }
 
 #[test]
@@ -31,7 +40,11 @@ fn test_star2(){
 }
 
 fn star2(data: Data) -> usize {
-    let windowed:Vec<u32> = zip(zip(&data, &data[1..]), &data[2..]).map(|((x, y), z)| x+y+z).collect();
+    let windowed:Vec<u32> = zip(
+        zip(&data, &data[1..]
+    ), &data[2..])
+        .map(|((x, y), z)| x+y+z)
+        .collect();
     star1(windowed)
 }
 
