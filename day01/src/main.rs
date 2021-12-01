@@ -4,10 +4,9 @@ use itertools::zip;
 type Data = Vec<u32>;
 
 fn parse(fname: &str) -> Data {
-    let input :String = String::from_utf8(fs::read(fname)
+    String::from_utf8(fs::read(fname)
         .expect("missing file"))
-        .unwrap();
-    input
+        .unwrap()
         .lines()
         .map(|x| {
              x
@@ -18,11 +17,11 @@ fn parse(fname: &str) -> Data {
 }
 
 #[test]
-fn test_star1(){
-    assert_eq!(star1(parse("test0")), 7)
+fn test_part1(){
+    assert_eq!(part1(parse("test0")), 7)
 }
 
-fn star1(data: Data) -> usize {
+fn part1(data: Data) -> usize {
     data.into_iter().fold(
         (u32::MAX,0), 
         | (prev, val), next | -> (u32, usize) {
@@ -35,20 +34,22 @@ fn star1(data: Data) -> usize {
 }
 
 #[test]
-fn test_star2(){
-    assert_eq!(star2(parse("test0")), 5)
+fn test_part2(){
+    assert_eq!(part2(parse("test0")), 5)
 }
 
-fn star2(data: Data) -> usize {
-    let windowed:Vec<u32> = zip(
-        zip(&data, &data[1..]
-    ), &data[2..])
-        .map(|((x, y), z)| x+y+z)
+fn part2(data: Data) -> usize {
+    let windowed:Vec<u32> = 
+        zip(
+            zip(&data, &data[1..]),
+            &data[2..]
+        )
+        .map(|((x, y), z)| x + y + z)
         .collect();
-    star1(windowed)
+    part1(windowed)
 }
 
 fn main() {
-    println!("{:?}", star1(parse("input")));
-    println!("{:?}", star2(parse("input")));
+    println!("{:?}", part1(parse("input")));
+    println!("{:?}", part2(parse("input")));
 }
