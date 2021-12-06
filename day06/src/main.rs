@@ -1,44 +1,33 @@
 type Fish = [u128; 9];
 
 fn parse(fname: &str) -> Fish {
-    let input = std::fs::read_to_string(fname).unwrap();
-    let mut input_fish: Fish = [0u128; 9];
-    input
+    std::fs::read_to_string(fname)
+        .unwrap()
         .split(",")
         .into_iter()
         .map(|s| s.trim().parse::<usize>().unwrap())
-        .for_each(|n| input_fish[n] += 1);
-    input_fish
+        .fold([0u128; 9], |acc, val| {
+            let mut new_acc = acc;
+            new_acc[val] += 1;
+            new_acc
+        })
 }
 
 fn step_day(f: Fish) -> Fish {
-    let mut new_fish = [0u128; 9];
-    for (i, &val) in f.iter().enumerate() {
-        if i == 0 {
-            new_fish[8] = val;
-            new_fish[6] = val;
-        } else {
-            new_fish[i - 1] += val;
-        }
-    }
-    new_fish
+    [f[1], f[2], f[3], f[4], f[5], f[6], f[7] + f[0], f[8], f[0]]
 }
 
-fn part1(data: Fish) -> u128 {
-    let mut fish = data;
-    for _ in 0..80 {
-        fish = step_day(fish);
-    }
-    fish.iter().sum()
+fn step_days(days: usize, fish: Fish) -> Fish {
+    (0..days).fold(fish, |acc, _| step_day(acc))
+}
+fn part1(fish: Fish) -> u128 {
+    step_days(80, fish).iter().sum()
 }
 
-fn part2(data: Fish) -> u128 {
-    let mut fish = data;
-    for _ in 0..256 {
-        fish = step_day(fish);
-    }
-    fish.iter().sum()
+fn part2(fish: Fish) -> u128 {
+    step_days(256, fish).iter().sum()
 }
+
 #[test]
 fn test_part1() {
     assert_eq!(part1(parse("test0")), 5934)
