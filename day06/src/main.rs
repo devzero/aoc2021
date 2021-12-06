@@ -6,10 +6,9 @@ fn parse(fname: &str) -> Fish {
         .split(",")
         .into_iter()
         .map(|s| s.trim().parse::<usize>().unwrap())
-        .fold([0u128; 9], |acc, val| {
-            let mut new_acc = acc;
-            new_acc[val] += 1;
-            new_acc
+        .fold([0u128; 9], |mut acc, val| {
+            acc[val] += 1;
+            acc
         })
 }
 
