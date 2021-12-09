@@ -1,4 +1,3 @@
-#[derive(Debug)]
 struct HeatMap {
     x: usize,
     y: usize,
